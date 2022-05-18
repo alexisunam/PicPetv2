@@ -11,23 +11,24 @@
     <link rel="stylesheet" href="css/styles.css">
     <title>Inicio de Sesión</title>
 
-    <link href="css/signin.css" rel="stylesheet">
+    <link href="../static/picpet/css/signin.css" rel="stylesheet">
   </head>
   <body class="text-center">
 
 
 
     <main class="form-signin">
-        <form>
+        <form action="validarSesion" method="post">
+          {% csrf_token %}
           <img class="mb-4" src="https://cdn.pixabay.com/photo/2016/03/31/17/37/animal-1293792_960_720.png" alt="" width="72" height="57">
           <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
       
           <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
           </div>
           <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <input type="password" name="contrasenia" class="form-control" id="floatingPassword" placeholder="Password">
             <label for="floatingPassword">Password</label>
           </div>
       

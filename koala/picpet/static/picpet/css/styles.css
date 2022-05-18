@@ -1,0 +1,410 @@
+/* GLOBALES */
+body {
+  background-color: #f5f3f3;
+}
+
+/* Utilidades */
+
+.titulo {
+  margin-top: 1.8rem;
+  margin-bottom: 1rem;
+  padding: 0.1rem;  
+}
+
+/* ||| TEMPLATE HOME PAGE ||| */
+
+.titulo-home {
+  margin-bottom: 1.9rem;
+  padding: 0.1rem;
+}
+
+/* Modificacion de altura, ajuste de imagen en celular y opacidad para los textos */
+div.carousel-inner div.carousel-item::before {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #2121215e;
+    content: "";
+}
+
+.carousel,
+.carousel-inner > .item > img {
+  height: 30%;
+}
+
+.carousel-inner img {
+  width: 100%;
+  max-height: 28.125rem;
+  object-fit: cover;
+}
+
+.carousel-inner {
+  height: 28.125rem;
+}
+
+/* Modificacion a botones del navbar cambio de color */
+
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}
+
+.btn:hover {
+  color: #212529;
+}
+
+.btn-primary {
+  color: #000;
+  background-color: whitesmoke;
+  border-color: #3eafe6;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #3eafe6;
+  border-color: #3eafe6;
+}
+
+@media (max-width: 500px) {
+
+  .btn-group-vertical-personalizado {
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+  }
+
+  .btn-group-vertical-personalizado > .btn {
+    position: relative;
+    flex: 1 1 auto;
+  }
+
+  .btn-group-vertical-personalizado > .btn-check:checked + .btn,
+  .btn-group-vertical-personalizado > .btn-check:focus + .btn,
+  .btn-group-vertical-personalizado > .btn:hover,
+  .btn-group-vertical-personalizado > .btn:focus,
+  .btn-group-vertical-personalizado > .btn:active,
+  .btn-group-vertical-personalizado > .btn.active {
+    z-index: 1;
+  }
+
+  .btn-group-vertical-personalizado {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .btn-group-vertical-personalizado > .btn,
+  .btn-group-vertical-personalizado > .btn-group {
+    width: 100%;
+  }
+
+  .btn-group-vertical-personalizado > .btn:not(:first-child),
+  .btn-group-vertical-personalizado > .btn-group:not(:first-child) {
+    margin-top: -1px;
+  }
+
+  .btn-group-vertical-personalizado
+    > .btn:not(:last-child):not(.dropdown-toggle),
+  .btn-group-vertical-personalizado > .btn-group:not(:last-child) > .btn {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .btn-group-vertical-personalizado > .btn ~ .btn,
+  .btn-group-vertical-personalizado > .btn-group:not(:first-child) > .btn {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+/* Copy section */
+
+.copy {
+    background: #3eafe6;
+    padding: 80px 0;
+}
+
+.copy__texts {
+    color: #fff;
+}
+.title--margin {
+    margin: 0;
+}
+
+/* about section */
+
+.about {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.about__img {
+  width: 45%;
+  text-align: center;
+  margin: 0;
+}
+@media (max-width: 800px) {
+  .about__img {
+      width: 100%;
+  }
+}
+.about__picture {
+  max-width: 80%;
+}
+.about__texts {
+  width: 50%;
+  --aling-title: left;
+}
+@media (max-width: 800px) {
+  .about__texts {
+      width: 90%;
+      text-align: center;
+      margin: 0 auto;
+      margin-bottom: 80px;
+      --aling-title: center;
+  }
+}
+@media (max-width: 550px) {
+  .about__texts {
+      width: 100%;
+  }
+}   
+.about__paragraph {
+  line-height: 1.5;
+}
+@media (max-width: 800px) {
+  .about__paragraph {
+      text-align: left;
+  }
+}
+
+/* Galeria section */
+
+.galeria {
+  width: 90%;
+  max-width: 68.75rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+.galeria img {
+  width: 30%;
+  margin-bottom: 30px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 0 3px rgb(0, 0, 0, 0.6);
+}
+@media (max-width: 800px) {
+  .galeria img {
+      width: 45%;
+  }
+}
+@media (max-width: 500px) {
+  .galeria img {
+      width: 95%;
+  }
+}
+
+/* Cards section */
+
+.grid-cards {
+  width: 70%;
+  max-width: 68.75rem;
+  margin: 0 auto;
+}
+
+/* ||| TEMPLATE REGISTRAR ARTISTA y REGISTRAR PERSONA ||| */
+
+.cancela-registro {
+  margin: 0.5rem;
+  /* max-height: 0.4rem; */
+
+}
+
+.titulo-registro {
+  padding: 1.2rem;
+  margin-bottom: 3.4rem;
+  outline: thick double #32a1ce;
+
+}
+
+.contenedor-form-registro {
+  max-width: 80%;
+  padding: 2rem;
+  margin: 2.5rem auto 0 auto;
+  box-shadow: 0 0 .15rem rgba(0, 0, 0, .5);
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.img-picpet {
+  margin-top: 2rem;
+}
+
+.titulo-form-registro {
+  margin-bottom: 3rem;
+}
+
+.cuenta-tipo-img {
+  max-width: 15%;
+  min-width: 6.25rem;
+  margin: 2rem auto;
+}
+
+.cuenta-tipo-img img {
+  max-width: 99%;
+  border-radius: 1.8rem 0.1rem 1.8rem 0.1rem;
+}
+
+.footer-registro {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1.5rem auto;
+  padding: 0.1rem;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+}
+
+@media (max-width: 920px) {
+
+    .footer-registro {
+        
+        width: 60%;
+        
+        
+    }
+}
+
+@media (max-width: 530px) {
+
+  .footer-registro {
+      
+      width: 95%;
+      
+      
+  }
+}
+
+.botones-registro {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* ||| Template CUENTAS ||| */
+
+.card-cuenta {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-image: linear-gradient(360deg, #32a1ce 50%, #fff 50%);
+  flex-wrap: wrap;
+}
+@media (max-width: 800px) {
+  .card {
+      background: #fff;
+  }
+}
+.card__item {
+  max-width: 25rem;
+  width: 30%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+  text-align: center;
+  padding: 40px 0;
+  background: #fff;
+  border-radius: 10px;
+}
+@media (max-width: 800px) {
+  .card__item {
+      width: 45%;
+      margin: 40px 0;
+  }
+}
+@media (max-width: 500px) {
+  .card__item {
+      width: 90%;
+  }
+}
+/* .card__item--active {
+  background: #5175FF;
+  --color-price: #fff;
+  --color-features: #fff;
+  --color-boton: #26293A;
+} */
+/* @media (max-width: 800px) {
+  
+} */
+.card__plan {
+  color: #26293A;
+  margin-bottom: 20px;
+}
+.card__price {
+  font-size: 3rem;
+  color: #26293A;
+}
+
+.card-img {
+  width: 50%;
+  margin: 1rem auto;
+}
+
+.card-img img{
+  width: 100%;
+  border-radius: 1rem;
+}
+
+/* .card__features {
+  color: #8f8484;
+  margin-bottom: 25px;
+} */
+.card__features--margin {
+  margin: 30px 0 50px;
+}
+.card__features:nth-last-of-type(1) {
+  margin-bottom: 50px;
+}
+.card__cta {
+  display: inline-block;
+  background: #32a1ce;
+  color: #fff;
+  width: 190px;
+  text-align: center;
+  padding: 20px 0;
+  text-decoration: none;
+  border-radius: 40px;
+}
+
+.card__cta:hover {
+  background: #2a8cb3;
+  color: #fff;
+}
