@@ -7,19 +7,21 @@ from picpet.models import Persona
 
 
 # Create your views here.
+
 def home(request):
     return render(request, 'home.html')
 
+# -- inicio funcion iniciar sesion --
 def iniciarSesion(request):
     return render(request, 'login.html')
+# -- fin --
 
+# -- inicio funcion validar sesion--
 def validarSesion(request):
     if(request.method == 'POST'):
-        email = request.POST['email']
-        password = request.POST['contrasenia']
-        emailPersona = Persona.objects.get(email=email)
-        pswPersona = emailPersona.contrasenia
-        if(pswPersona == password):
+        persona = Persona.objects.get(email=request.POST['email'])
+        
+        if(persona.contrasenia == request.POST['contrasenia']):
             mensaje = "Inicio de sesion exitoso"
             return render(request, 'validarSesion.html', {'mensaje' : mensaje})
         else:
@@ -28,17 +30,24 @@ def validarSesion(request):
     else:
         print("error primer if")
         return render(request, 'login.html')
+# -- fin --
 
+# -- inicio funcion cuentas--
 def cuentas(request):
     return render(request, 'cuentas.html')
+# -- fin --
 
+# -- inicio funcion registrar artista--
 def registrarArtista(request):
     return render(request, 'registrarArtista.html')
+# -- fin --
 
+# -- inicio funcion registrar persona--
 def registrarPersona(request):
     return render(request, 'registrarPersona.html')
+# -- fin --
 
-
+# -- inicio funcion insertar persona--
 def insertarPersona(request):
     if(request.method == 'POST'):
         
@@ -51,8 +60,11 @@ def insertarPersona(request):
             return render(request, 'registrarPersona.html')
     else:
         return render(request, 'registrarPersona.html')
-    
+# -- fin --
+
+# -- inicio funcion read personas--    
 def readPersonas(request):
     personas = Persona.objects.order_by('nombre')
 
     return render(request, 'readPersonas.html', {'personas' : personas})
+# -- fin --

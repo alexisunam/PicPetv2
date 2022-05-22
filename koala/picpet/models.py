@@ -13,6 +13,11 @@ class Persona(models.Model):
     def __str__(self):
         return f'Persona {self.id} : {self.nombre} {self.apellidoPaterno} {self.apellidoMaterno} {self.nombreUsuario} {self.email} {self.edad} {self.contrasenia}'
 
+""" class Documento(models.Model):
+    titulo = models.CharField(max_length=255)
+    subirArchivo = models.FileField(upload_to="Uploaded Files/")
+    dateTimeOfUpload = models.DataTimeField(auto_now=True)
 
-""" class Artista(Persona):
-     """
+class Artista(Persona):
+    numeroCuenta = models.CharField(max_length=9)
+    archivo = Documento()    """
