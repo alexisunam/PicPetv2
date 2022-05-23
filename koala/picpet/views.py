@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 """ from django.forms import modelform_factory """
-from picpet.models import Persona
+from picpet.models import Persona, Artista, Documento
 
 
 
@@ -60,6 +60,39 @@ def insertarPersona(request):
             return render(request, 'registrarPersona.html')
     else:
         return render(request, 'registrarPersona.html')
+# -- fin --
+
+def insertarArtista(request):
+    if(request.method == 'POST'):
+        print(request)
+        documentoTitulo = (request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno'])
+        
+        documentoSubido = request.POST['uploadArchivo'] 
+        
+        documentoNuevo = Documento(titulo=documentoTitulo, subirArchivo=documentoSubido)
+        
+        """ documentoNuevo = Documento(titulo=(request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno']), subirArchivo=request.FILES['uploadArchivo']) """
+        
+        if documentoNuevo.titulo == (request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno']):
+
+            artistaNuevo = Artista( numeroCuenta=request.POST['numeroCuenta'], archivo=documentoNuevo, nombre=request.POST['nombre'], apellidoPaterno=request.POST['apellidoPaterno'], apellidoMaterno=request.POST['apellidoMaterno'], nombreUsuario=request.POST['nombreUsuario'], email=request.POST['email'], edad=request.POST['edad'], contrasenia=request.POST['contrasenia'])
+        else:
+            return render(request, "registrarartista.html")
+                
+        if artistaNuevo.numeroCuenta == request.POST['numeroCuenta']:
+            
+            documentoNuevo.save()
+            artistaNuevo.save()
+            print("Se logro")
+            files = Documento.objects.all()
+            
+            return render(request, 'homeUsuario.html', {'files' : files})
+        else:
+            print("tercer validacion fallo")
+            return render(request, 'registrarArtista.html')
+                
+    else:
+        return render(request, 'registrarArtista.html')
 # -- fin --
 
 # -- inicio funcion read personas--    

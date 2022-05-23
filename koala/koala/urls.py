@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from unicodedata import name
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls.static import static
 
 from picpet.views import home
 from picpet.views import *
@@ -30,5 +32,12 @@ urlpatterns = [
     path('registrar_artista', registrarArtista, name='registrar artista'),
     path('registrar_persona', registrarPersona, name='registrar persona'),
     path('insertarPersona', insertarPersona, name='insertarPersona'),
+    path('insertarArtista', insertarArtista, name='insertarArtista'),
     path('Consultar_clientes', readPersonas, name='consultar clientes'),
 ]
+
+if settings.DEBUG: 
+    urlpatterns += static(
+        settings.MEDIA_URL, 
+        document_root = settings.MEDIA_ROOT
+    )
