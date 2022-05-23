@@ -67,7 +67,7 @@ def insertarArtista(request):
         print(request)
         documentoTitulo = (request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno'])
         
-        documentoSubido = request.POST['uploadArchivo'] 
+        documentoSubido = request.FILES['uploadArchivo'] 
         
         documentoNuevo = Documento(titulo=documentoTitulo, subirArchivo=documentoSubido)
         
