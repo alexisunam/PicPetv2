@@ -23,7 +23,8 @@ def validarSesion(request):
         
         if(persona.contrasenia == request.POST['contrasenia']):
             mensaje = "Inicio de sesion exitoso"
-            return render(request, 'validarSesion.html', {'mensaje' : mensaje})
+            #return render(request, 'validarSesion.html', {'mensaje' : mensaje})
+            return render(request, 'homeUsuario.html', {'persona : persona'})
         else:
             mensaje = "Inicio de sesion fracasado"
             return render(request, 'validarSesion.html', {'mensaje' : mensaje})
