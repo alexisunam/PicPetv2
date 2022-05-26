@@ -81,8 +81,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'picpet',
-        'USER': 'servicio',
-        'PASSWORD': 'passpass',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': '50.19.31.203',
         'PORT': '3307',
     }
