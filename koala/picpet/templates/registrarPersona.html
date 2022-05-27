@@ -43,9 +43,10 @@
         
         <h3 class="h3 display-9 text-center titulo-form-registro">Datos Personales</h3>
 
-        <form action="insertarPersona" method="post">
+        <form id="formulario" novalidate action="insertarPersona" method="post">
         {% csrf_token %}
         <div class="row g-3 contenedor-form-registro">
+          
           <div class="col-md-4">
               <label for="validationServer01" class="form-label">Nombre</label>
               <input type="text" name="nombre" class="form-control is-valid" id="validationServer01" value="Mark" required>
@@ -108,28 +109,7 @@
               </div>
             </div>
   
-<!-- {% comment %}               <div class="col-md-2">
-              <label for="validationServer04" class="form-label">Sexo</label>
-              <select class="form-select is-invalid" id="validationServer04" name="sexo" aria-describedby="validationServer04Feedback" required>
-                <option selected disabled value="">Selecciona...</option>
-                <option>Hombre</option>
-                <option>Mujer</option>
-                <option>Otro...</option>
-              </select>
-              <div id="validationServer04Feedback" class="invalid-feedback">
-                Por favor selecciona un sexo.
-              </div>
-            </div> {% endcomment %}
-  
             
-  
-            {% comment %} <div class="col-md-4">
-              <label for="validationServer03" class="form-label">Confirmar Contraseña</label>
-              <input type="text" class="form-control is-invalid" id="validationServer03" aria-describedby="validationServer03Feedback" required>
-              <div id="validationServer03Feedback" class="invalid-feedback">
-                La contraseña no coinside.
-              </div>
-            </div> {% endcomment %} -->
           
         </div>
           
@@ -156,29 +136,6 @@
             </div>
     
         </form>
-
-      
-                <!-- {% comment %} <script src="./js/registroValidacion.js"> 
-                /* // Example starter JavaScript for disabling form submissions if there are invalid fields
-                (function() {
-                    'use strict';
-                    window.addEventListener('load', function() {
-                    Fetch all the forms we want to apply custom Bootstrap validation styles to
-                    var forms = document.getElementsByClassName('needs-validation');
-                    Loop over them and prevent submission
-                    var validation = Array.prototype.filter.call(forms, function(form) {
-                        form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                        }, false);
-                    });
-                    }, false);
-                })(); */
-                </script>
-                {% endcomment %} -->
 
     </main>
 

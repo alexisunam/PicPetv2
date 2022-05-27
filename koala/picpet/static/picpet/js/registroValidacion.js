@@ -7,7 +7,7 @@
       // Loop over them and prevent submission
       var validation = Array.prototype.filter.call(forms, function(form) {
         form.addEventListener('submit', function(event) {
-          if (form.checkValidity() === false) {
+          if (form.checkValidity() === false || password1.value !== password2.value) {
             event.preventDefault();
             event.stopPropagation();
           }

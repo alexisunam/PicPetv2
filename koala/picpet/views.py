@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 """ from django.forms import modelform_factory """
 from picpet.models import Persona, Artista, Documento
@@ -24,7 +24,7 @@ def validarSesion(request):
         if(persona.contrasenia == request.POST['contrasenia']):
             mensaje = "Inicio de sesion exitoso"
             #return render(request, 'validarSesion.html', {'mensaje' : mensaje})
-            return render(request, 'homeUsuario.html', {'persona : persona'})
+            return render(request, 'homeUsuario.html', {'persona' : persona})
         else:
             mensaje = "Inicio de sesion fracasado"
             return render(request, 'validarSesion.html', {'mensaje' : mensaje})
@@ -101,4 +101,12 @@ def readPersonas(request):
     personas = Persona.objects.order_by('nombre')
 
     return render(request, 'readPersonas.html', {'personas' : personas})
+# -- fin --
+
+
+# -- inicio funcion mostra usuario--
+def mostrarUsuario(request, id):
+    persona = get_object_or_404(Persona, pk=id)
+    
+    return render(request, 'verDatosUsuario.html' ,{'persona' : persona})
 # -- fin --

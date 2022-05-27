@@ -45,7 +45,7 @@
                     <img src="https://cdn-icons.flaticon.com/png/512/4202/premium/4202843.png?token=exp=1653251594~hmac=686e24866fb2f6991afb83ae5d86c2a8" alt="mdo" width="32" height="32" class="rounded-circle">
                   </a>
                   <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="">Mi perfil</a></li>
+                    <li><a class="dropdown-item" href="{% url 'mi perfil' persona.id %}">Mi perfil</a></li>
                     <li><a class="dropdown-item" href="#">Configuración</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Cerrar sesion</a></li>
@@ -55,7 +55,7 @@
           </header>
         </div>
         <main>
-          <table>
+<!--           <table>
             <tr>
                 <th>ID</th>
                 <th>Title</th>
@@ -70,7 +70,7 @@
                     <td>{{ file.dateTimeOfUpload }}</td>
                 </tr>
             {% endfor %}
-        </table>
+        </table> -->
         </main>
 
 
