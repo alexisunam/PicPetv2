@@ -83,8 +83,8 @@ DATABASES = {
         'NAME': 'picpet',
         'USER': 'servicio',
         'PASSWORD': 'passpass',
-        'HOST': '50.19.31.203',
-        'PORT': '3307',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
