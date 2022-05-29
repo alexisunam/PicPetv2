@@ -61,10 +61,16 @@ def insertarPersona(request):
         personaNueva = Persona(nombre=request.POST['nombre'], apellidoPaterno=request.POST['apellidoPaterno'], apellidoMaterno=request.POST['apellidoMaterno'], nombreUsuario=request.POST['nombreUsuario'], email=request.POST['email'], edad=request.POST['edad'], contrasenia=request.POST['contrasenia'])
         respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-success mt-2", 'mensaje' : "Se registro correctamente", 'clasesBoton' : "btn btn-primary", 'boton' : "Regresar"}
         
+        emails, nombresDeUsuario = emailsYusuarios()
+        
+        if(personaNueva.nombreUsuario in nombresDeUsuario):
+            respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'claseInput' : " is-valid", 'claseAlert' : "nada", 'mensaje2' : "El nombre de usuario ya existe", 'clasesBoton' : "btn btn-primary", 'boton' : "Regresar"}
+            return render(request, 'registrarPersona.html', {'respuestaValidacion' : respuestaValidacion, 'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
+        
+        personaNueva.email == request.POST['email']
         personaNueva.save()
         print(respuestaValidacion)
-        emails, nombresDeUsuario = emailsYusuarios();
-        return render(request, 'registrarPersona.html', {'respuestaValidacion' : respuestaValidacion, 'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
+        return render(request, 'registrarPersona.html', {'respuestaValidacion' : respuestaValidacion})
 
     else:
         return render(request, 'registrarPersona.html')

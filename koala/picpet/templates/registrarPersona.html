@@ -69,10 +69,9 @@
               <label for="nombreUsuario" class="form-label">Nombre de ususario</label>
               <div class="input-group has-validation">
                   <span class="input-group-text" id="inputGroupPrepend3">@</span>
-                  <input type="text" name ="nombreUsuario" class="form-control" id="nombreUsuario" required>
+                  <input type="text" name ="nombreUsuario" class="form-control{{respuestaValidacion.claseInput}}" id="nombreUsuario" required>
 
-                  <p class="text-danger mb-2 d-none" id="alertNombreUsuario"></p>
-                  <p class="text-danger mb-2 d-none" id="alertNombreUsuarioExistente"></p>
+                  <p class="text-danger mb-2 d-none{{respuestaValidacion.alert}}" id="alertNombreUsuario"></p>
               </div>
           </div>
 

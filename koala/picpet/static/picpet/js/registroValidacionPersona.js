@@ -1,11 +1,3 @@
-let dataEmails = window.data.emails;
-let dataNombresDeUsuario =  window.data2.nombresDeUsuario;
-console.log(data);
-console.log(dataEmails[0]);
-console.log(dataEmails[1]);
-console.log(dataNombresDeUsuario[0]);
-console.log(dataNombresDeUsuario[1]);
-
 const formulario = document.getElementById("formulario");
 
 const nombre = document.getElementById("nombre");
@@ -59,8 +51,6 @@ const pintarMensajeError = (errores) => {
 formulario.addEventListener("submit", (e) => {
     if(validarCampos() == false) {
         e.preventDefault();
-        console.log(dataEmails.includes(email.value))
-        console.log(dataNombresDeUsuario.includes(nombreUsuario.value))
         /* alertSuccess.classList.add("d-none"); */
         const errores = [];
     
@@ -119,14 +109,6 @@ formulario.addEventListener("submit", (e) => {
                 msg: "Escriba un nombre de usuario válido",
             });
 
-        } else if(dataNombresDeUsuario.includes(nombreUsuario.value) == true) {
-            nombreUsuario.classList.add("is-invalid");
-    
-            errores.push({
-                tipo: alertNombreUsuario,
-                msg: "Este nombre de usuario ya existe",
-            });
-
         } else {
             nombreUsuario.classList.remove("is-invalid");
             nombreUsuario.classList.add("is-valid");
@@ -142,14 +124,6 @@ formulario.addEventListener("submit", (e) => {
                 msg: "Escriba un correo válido",
             });
     
-        } else if(dataEmails.includes(email.value) == true){
-
-            email.classList.add("is-invalid");
-    
-            errores.push({
-                tipo: alertEmail,
-                msg: "El correo ya esta registrado",
-            });
 
         } else {
             
@@ -238,7 +212,7 @@ function validarCampos() {
     !regNombreUsuario.test(nombreUsuario.value) || !nombreUsuario.value.trim() || !regEmail.test(email.value) ||
     !email.value.trim() || !regEdad.test(edad.value) || !edad.value.trim() || !regContrasenia.test(contrasenia.value) ||
     !contrasenia.value.trim() || !regContrasenia.test(confirmarContrasenia.value) || !confirmarContrasenia.value.trim() ||
-    terminos.checked == false || dataEmails.includes(email.value) == true || dataNombresDeUsuario.includes(nombreUsuario.value) == true) {
+    terminos.checked == false) {
         return false;
     } else {
         return true;
