@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
+from numpy import array
 """ from django.forms import modelform_factory """
 from picpet.models import Persona, Artista, Documento
 
@@ -45,7 +46,12 @@ def registrarArtista(request):
 
 # -- inicio funcion registrar persona--
 def registrarPersona(request):
-    return render(request, 'registrarPersona.html')
+    
+    emails, nombresDeUsuario = emailsYusuarios(); #retorna dos arreglos    
+        
+    print(emails)
+    print(nombresDeUsuario)
+    return render(request, 'registrarPersona.html', {'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
 # -- fin --
 
 # -- inicio funcion insertar persona--
@@ -53,16 +59,18 @@ def insertarPersona(request):
     if(request.method == 'POST'):
         
         personaNueva = Persona(nombre=request.POST['nombre'], apellidoPaterno=request.POST['apellidoPaterno'], apellidoMaterno=request.POST['apellidoMaterno'], nombreUsuario=request.POST['nombreUsuario'], email=request.POST['email'], edad=request.POST['edad'], contrasenia=request.POST['contrasenia'])
-        if personaNueva.save() == True:
-            personaNueva.save()
-            return render(request, 'registrarPersona.html')
-        else:
-            print("NO se guardo")
-            return render(request, 'registrarPersona.html')
+        respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-success mt-2", 'mensaje' : "Se registro correctamente", 'clasesBoton' : "btn btn-primary", 'boton' : "Regresar"}
+        
+        personaNueva.save()
+        print(respuestaValidacion)
+        emails, nombresDeUsuario = emailsYusuarios();
+        return render(request, 'registrarPersona.html', {'respuestaValidacion' : respuestaValidacion, 'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
+
     else:
         return render(request, 'registrarPersona.html')
 # -- fin --
 
+# -- inicio funcio insertar artista--
 def insertarArtista(request):
     if(request.method == 'POST'):
         print(request)
@@ -87,7 +95,7 @@ def insertarArtista(request):
             print("Se logro")
             files = Documento.objects.all()
             
-            return render(request, 'homeUsuario.html', {'files' : files})
+            return render(request, 'registrarArtista.html', {'files' : files})
         else:
             print("tercer validacion fallo")
             return render(request, 'registrarArtista.html')
@@ -110,3 +118,16 @@ def mostrarUsuario(request, id):
     
     return render(request, 'verDatosUsuario.html' ,{'persona' : persona})
 # -- fin --
+
+# -- inicio funcion emailsYusuarios, regresa dos arreglos--
+def emailsYusuarios():
+    personas = Persona.objects.all();
+    emailsArreglo = list();
+    nombresUsuariosArreglo = list();
+    for emailPersona in personas:
+        emailsArreglo.append(emailPersona.email)
+        
+    for nombreUsuarioPersona in personas:
+        nombresUsuariosArreglo.append(nombreUsuarioPersona.nombreUsuario)
+    
+    return emailsArreglo, nombresUsuariosArreglo
