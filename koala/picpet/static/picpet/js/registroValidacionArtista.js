@@ -1,3 +1,11 @@
+let dataEmails = window.data.emails;
+let dataNombresDeUsuario =  window.data2.nombresDeUsuario;
+console.log(data);
+console.log(dataEmails[0]);
+console.log(dataEmails[1]);
+console.log(dataNombresDeUsuario[0]);
+console.log(dataNombresDeUsuario[1]);
+
 const formulario = document.getElementById("formulario");
 
 const nombre = document.getElementById("nombre");
@@ -33,10 +41,10 @@ const regEmail = /^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,
 const regEdad = /^[\d]{2,3}$/;
 const regNumeroCuenta = /^[\d]{9}$/;
 
-const pintarMensajeExito = () => {
+/* const pintarMensajeExito = () => {
     alertSuccess.classList.remove("d-none");
     alertSuccess.textContent = "Registro éxitoso";
-};
+}; */
 
 const pintarMensajeError = (errores) => {
     errores.forEach((item) => {
@@ -58,7 +66,7 @@ formulario.addEventListener("submit", (e) => {
     
             errores.push({
                 tipo: alertNombre,
-                msg: "Formato no válido campo nombre, solo letras, este debe    iniciar con mayuscula",
+                msg: "Formato no válido campo nombre, solo letras, este debe iniciar con mayuscula",
             });
         
         } else {
@@ -106,6 +114,15 @@ formulario.addEventListener("submit", (e) => {
                 tipo: alertNombreUsuario,
                 msg: "Escriba un nombre de usuario válido",
             });
+
+        } else if(dataNombresDeUsuario.includes(nombreUsuario.value) == true) {
+            nombreUsuario.classList.add("is-invalid");
+    
+            errores.push({
+                tipo: alertNombreUsuario,
+                msg: "Este nombre de usuario ya existe",
+            });
+
         } else {
             nombreUsuario.classList.remove("is-invalid");
             nombreUsuario.classList.add("is-valid");
@@ -121,10 +138,20 @@ formulario.addEventListener("submit", (e) => {
                 msg: "Escriba un correo válido",
             });
     
+        } else if(dataEmails.includes(email.value) == true){
+
+            email.classList.add("is-invalid");
+    
+            errores.push({
+                tipo: alertEmail,
+                msg: "El correo ya esta registrado",
+            });
+
         } else {
+            
             email.classList.remove("is-invalid");
             email.classList.add("is-valid");
-            alertEmail.classList.add("d-none");
+            alertEmail.classList.add("d-none");  
         }
     
         // validar edad
@@ -139,7 +166,7 @@ formulario.addEventListener("submit", (e) => {
         } else {
             edad.classList.remove("is-invalid");
             edad.classList.add("is-valid");
-            edad.classList.add("d-none");
+            alertEdad.classList.add("d-none");
         }
     
       // validar contrasenia
@@ -212,7 +239,7 @@ formulario.addEventListener("submit", (e) => {
             terminos.classList.add("is-valid");
             alertTerminos.classList.add("d-none");
         }
-    
+
         if (errores.length !== 0) {
             pintarMensajeError(errores);
             return;
@@ -220,8 +247,8 @@ formulario.addEventListener("submit", (e) => {
         console.log(validarCampos());
     }
         console.log("Formulario enviado con éxito");
-        console.log("validarCampos()");
-      /* pintarMensajeExito(); */
+        /* console.log("validarCampos()");
+        pintarMensajeExito(); */
 });
 
 
@@ -232,7 +259,7 @@ function validarCampos() {
     !regNombreUsuario.test(nombreUsuario.value) || !nombreUsuario.value.trim() || !regEmail.test(email.value) ||
     !email.value.trim() || !regEdad.test(edad.value) || !edad.value.trim() || !regContrasenia.test(contrasenia.value) ||
     !contrasenia.value.trim() || !regContrasenia.test(confirmarContrasenia.value) || !confirmarContrasenia.value.trim() ||
-    terminos.checked == false || !regNumeroCuenta.test(numeroCuenta.value) || !numeroCuenta.value.trim() || !uploadArchivo.value) {
+    terminos.checked == false || dataEmails.includes(email.value) == true || dataNombresDeUsuario.includes(nombreUsuario.value) == true || !regNumeroCuenta.test(numeroCuenta.value) || !numeroCuenta.value.trim() || !uploadArchivo.value) {
         return false;
     } else {
         return true;

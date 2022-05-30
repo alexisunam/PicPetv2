@@ -27,8 +27,9 @@ def validarSesion(request):
             #return render(request, 'validarSesion.html', {'mensaje' : mensaje})
             return render(request, 'homeUsuario.html', {'persona' : persona})
         else:
-            mensaje = "Inicio de sesion fracasado"
-            return render(request, 'validarSesion.html', {'mensaje' : mensaje})
+            respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "Contraseña o correo equivocado"}
+            #mensaje = "Inicio de sesion fracasado"
+            return render(request, 'login.html', {'respuestaValidacion' : respuestaValidacion})
     else:
         print("error primer if")
         return render(request, 'login.html')
@@ -41,7 +42,11 @@ def cuentas(request):
 
 # -- inicio funcion registrar artista--
 def registrarArtista(request):
-    return render(request, 'registrarArtista.html')
+    emails, nombresDeUsuario = emailsYusuarios(); #retorna dos arreglos    
+        
+    print(emails)
+    print(nombresDeUsuario)
+    return render(request, 'registrarArtista.html', {'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
 # -- fin --
 
 # -- inicio funcion registrar persona--
@@ -74,33 +79,36 @@ def insertarPersona(request):
 def insertarArtista(request):
     if(request.method == 'POST'):
         print(request)
+        
         documentoTitulo = (request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno'])
-        
         documentoSubido = request.FILES['uploadArchivo'] 
-        
         documentoNuevo = Documento(titulo=documentoTitulo, subirArchivo=documentoSubido)
-        
-        """ documentoNuevo = Documento(titulo=(request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno']), subirArchivo=request.FILES['uploadArchivo']) """
         
         if documentoNuevo.titulo == (request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno']):
 
             artistaNuevo = Artista( numeroCuenta=request.POST['numeroCuenta'], archivo=documentoNuevo, nombre=request.POST['nombre'], apellidoPaterno=request.POST['apellidoPaterno'], apellidoMaterno=request.POST['apellidoMaterno'], nombreUsuario=request.POST['nombreUsuario'], email=request.POST['email'], edad=request.POST['edad'], contrasenia=request.POST['contrasenia'])
         else:
-            return render(request, "registrarartista.html")
+            emails, nombresDeUsuario = emailsYusuarios();
+            respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "Hubo un error en el registro", 'clasesBoton' : "", 'boton' : ""}
+            return render(request, "registrarArtista.html", {'respuestaValidacion' : respuestaValidacion, 'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
                 
         if artistaNuevo.numeroCuenta == request.POST['numeroCuenta']:
             
             documentoNuevo.save()
             artistaNuevo.save()
             print("Se logro")
-            files = Documento.objects.all()
-            
-            return render(request, 'registrarArtista.html', {'files' : files})
+            #files = Documento.objects.all()
+            respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-success mt-2", 'mensaje' : "Se registro correctamente", 'clasesBoton' : "btn btn-primary", 'boton' : "Regresar"}
+            emails, nombresDeUsuario = emailsYusuarios();
+            return render(request, 'registrarArtista.html', {'respuestaValidacion' : respuestaValidacion, 'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
         else:
             print("tercer validacion fallo")
-            return render(request, 'registrarArtista.html')
+            emails, nombresDeUsuario = emailsYusuarios();
+            respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "Hubo un error en el registro", 'clasesBoton' : "", 'boton' : ""}
+            return render(request, "registrarArtista.html", {'respuestaValidacion' : respuestaValidacion, 'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
                 
-    else:
+    else: 
+        """ emails, nombresDeUsuario = emailsYusuarios(); """
         return render(request, 'registrarArtista.html')
 # -- fin --
 

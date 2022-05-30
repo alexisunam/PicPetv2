@@ -152,7 +152,10 @@
           </div>
 
         </form>
-          
+        <div class="{{respuestaValidacion.centrar}}">
+          <div class="{{respuestaValidacion.clases}}" id="alertSuccess">{{respuestaValidacion.mensaje}}</div>
+          <a class="{{respuestaValidacion.clasesBoton}}" href="{% url 'index' %}">{{respuestaValidacion.boton}}</a>
+        </div>
               <!-- <script src="./js/registroValidacion.js"> -->
               
               <!-- </script> -->
@@ -164,6 +167,20 @@
     </footer>
     
   </body>
+  
+  <script>
+    window.data = { emails: {{ emails|safe}}}
+    window.data2 = { nombresDeUsuario: {{ nombresDeUsuario|safe}}}
+    console.log(window.data.emails.length)
+    data3 = window.data.emails
+    data4 = window.data2.nombresDeUsuario
+    data3.forEach(function(dataItem) {
+      console.log(dataItem);
+    });
+    data4.forEach(function(dataItem) {
+      console.log(dataItem);
+    });
+  </script>
 
   <script src="../static/picpet/js/registroValidacionArtista.js"></script>
   <!-- Option 1: Bootstrap Bundle with Popper -->
