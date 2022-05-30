@@ -51,7 +51,7 @@ def registrarPersona(request):
         
     print(emails)
     print(nombresDeUsuario)
-    return render(request, 'registrarPersona.html', {'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
+    return render(request, 'registrarPersona.html')
 # -- fin --
 
 # -- inicio funcion insertar persona--
@@ -63,16 +63,36 @@ def insertarPersona(request):
         
         emails, nombresDeUsuario = emailsYusuarios()
         
-        if(personaNueva.nombreUsuario in nombresDeUsuario):
-            respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'claseInput' : " is-valid", 'claseAlert' : "nada", 'mensaje2' : "El nombre de usuario ya existe", 'clasesBoton' : "btn btn-primary", 'boton' : "Regresar"}
-            return render(request, 'registrarPersona.html', {'respuestaValidacion' : respuestaValidacion, 'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
-        
-        personaNueva.email == request.POST['email']
-        personaNueva.save()
-        print(respuestaValidacion)
-        return render(request, 'registrarPersona.html', {'respuestaValidacion' : respuestaValidacion})
+        if((personaNueva.nombreUsuario in nombresDeUsuario) OR (personaNueva.email in emails)):
+            
+            if(personaNueva.nombreUsuario in nombresDeUsuario):
+                validacionUsuario = {'claseInput' : " is-invalid", 'claseAlert' : "nada", 'mensaje2' : "El nombre de usuario ya existe"}
+                
+            else:
+                validacionUsuario = {'claseInput' : " is-valid", 'claseAlert' : "", 'mensaje2' : "",}
+                
 
+            if(personaNueva.email in emails):
+                validacionEmail = {'claseInput' : " is-invalid", 'claseAlert' : "nada", 'mensaje2' : "El correo ya esta registrado, inicie sesion"}
+                
+            else:
+                
+                validacionEmail = {'claseInput' : " is-valid", 'claseAlert' : "", 'mensaje2' : "",}
+            
+            respuestaValidacion = {'centrar' : "text-center", 'clases' : "alert alert-danger mt-2", 'mensaje' : "Error al intentar registrarse", 'clasesBoton' : "", 'boton' : ""}
+                
+            return render(request, 'registrarPersona.html', {'respuestaValidacion' : respuestaValidacion, 'validacionUsuario' : validacionUsuario, 'validacionEmail' : validacionEmail})
+    
+        else:
+            validacionEmail = {'claseInput' : " is-valid", 'claseAlert' : "", 'mensaje2' : "",}
+            validacionUsuario = {'claseInput' : " is-valid", 'claseAlert' : "", 'mensaje2' : "",}
+            respuestaValidacion = {'centrar' : "text-center", 'clases' : "alert alert-success mt-2",'mensaje' : "Exito al registrarse", 'clasesBoton' : "btn btn-primary", 'boton' : "Regresar"}
+            return render(request, 'registrarPersona.html', {'respuestaValidacion' : respuestaValidacion, 'validacionUsuario' : validacionUsuario, 'validacionEmail' : validacionEmail})
+        
     else:
+        validacionEmail = {'claseInput' : " is-valid", 'claseAlert' : "", 'mensaje2' : "",}
+        validacionUsuario = {'claseInput' : " is-valid", 'claseAlert' : "", 'mensaje2' : "",}
+        respuestaValidacion = {'centrar' : "text-center", 'clases' : "alert alert-success mt-2",'mensaje' : "Exito al registrarse", 'clasesBoton' : "btn btn-primary", 'boton' : "Regresar"}
         return render(request, 'registrarPersona.html')
 # -- fin --
 
@@ -85,9 +105,7 @@ def insertarArtista(request):
         documentoSubido = request.FILES['uploadArchivo'] 
         
         documentoNuevo = Documento(titulo=documentoTitulo, subirArchivo=documentoSubido)
-        
-        """ documentoNuevo = Documento(titulo=(request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno']), subirArchivo=request.FILES['uploadArchivo']) """
-        
+                
         if documentoNuevo.titulo == (request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno']):
 
             artistaNuevo = Artista( numeroCuenta=request.POST['numeroCuenta'], archivo=documentoNuevo, nombre=request.POST['nombre'], apellidoPaterno=request.POST['apellidoPaterno'], apellidoMaterno=request.POST['apellidoMaterno'], nombreUsuario=request.POST['nombreUsuario'], email=request.POST['email'], edad=request.POST['edad'], contrasenia=request.POST['contrasenia'])
