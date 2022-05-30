@@ -35,6 +35,7 @@ urlpatterns = [
     path('insertarArtista', insertarArtista, name='insertarArtista'),
     path('Consultar_clientes', readPersonas, name='consultar clientes'),
     path('mi_perfil/<int:id>', mostrarUsuario, name='mi perfil'),
+    path('Inicio/<int:id>', myHome, name='my home'),
 ]
 
 if settings.DEBUG: 

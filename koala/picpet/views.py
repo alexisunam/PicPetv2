@@ -23,9 +23,13 @@ def validarSesion(request):
         persona = Persona.objects.get(email=request.POST['email'])
         
         if(persona.contrasenia == request.POST['contrasenia']):
-            mensaje = "Inicio de sesion exitoso"
-            #return render(request, 'validarSesion.html', {'mensaje' : mensaje})
-            return render(request, 'homeUsuario.html', {'persona' : persona})
+            if(persona.tipo == "Cliente"):
+                #return render(request, 'validarSesion.html', {'mensaje' : mensaje})
+                homeArtista = {'borrar' : "", 'menuGestion' : "Mis Compras"}
+                return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})
+            else:
+                homeArtista = {'borrar' : " d-none", 'menuGestion' : "Mis pedidos"}
+                return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})
         else:
             respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "Contraseña o correo equivocado"}
             #mensaje = "Inicio de sesion fracasado"
@@ -86,7 +90,7 @@ def insertarArtista(request):
         
         if documentoNuevo.titulo == (request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno']):
 
-            artistaNuevo = Artista( numeroCuenta=request.POST['numeroCuenta'], archivo=documentoNuevo, nombre=request.POST['nombre'], apellidoPaterno=request.POST['apellidoPaterno'], apellidoMaterno=request.POST['apellidoMaterno'], nombreUsuario=request.POST['nombreUsuario'], email=request.POST['email'], edad=request.POST['edad'], contrasenia=request.POST['contrasenia'])
+            artistaNuevo = Artista( numeroCuenta=request.POST['numeroCuenta'], archivo=documentoNuevo, nombre=request.POST['nombre'], apellidoPaterno=request.POST['apellidoPaterno'], apellidoMaterno=request.POST['apellidoMaterno'], nombreUsuario=request.POST['nombreUsuario'], email=request.POST['email'], edad=request.POST['edad'], tipo="Artista", contrasenia=request.POST['contrasenia'])
         else:
             emails, nombresDeUsuario = emailsYusuarios();
             respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "Hubo un error en el registro", 'clasesBoton' : "", 'boton' : ""}
@@ -126,6 +130,36 @@ def mostrarUsuario(request, id):
     
     return render(request, 'verDatosUsuario.html' ,{'persona' : persona})
 # -- fin --
+
+# -- inicio funcion actualizar usuario--
+def actualizarUsuario(request, id):
+    persona = get_object_or_404(Persona, pk=id)
+    if(request.method == 'POST'):
+        persona.nombre = request.POST['nombre']
+        persona.apellidoPaterno = request.POST['apellidoPaterno']
+        persona.apellidoMaterno = request.POST['apellidoMaterno']
+        persona.nombreUsuario = request.POST['nombreUsuario']
+        persona.edad = request.POST['edad']
+        
+        if not request.POST['nuevaContrasenia']:
+            persona.save()
+        else:
+            if(request.POST['nuevaContrasenia'] == request.POST['confirmarContrasenia']):
+                persona.contrasenia = request.POST['nuevaContrasenia']
+                persona.save()
+                
+
+# -- inicio funcion miHome--
+def myHome(request, id):
+    persona = get_object_or_404(Persona, pk=id)
+    if(persona.tipo == "Artista"):
+        homeArtista = {'borrar' : " d-none", 'menuGestion' : "Mis pedidos"}
+        return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})
+    else:
+        homeArtista = {'borrar' : "", 'menuGestion' : "Mis Compras"}
+        return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})    
+# -- fin --
+
 
 # -- inicio funcion emailsYusuarios, regresa dos arreglos--
 def emailsYusuarios():

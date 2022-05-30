@@ -28,12 +28,12 @@
     
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
               <li><a href="#" class="nav-link px-2 link-secondary">Inicio</a></li>
-              <li><a href="#" class="nav-link px-2 link-dark">Mis compras</a></li>
+              <li><a href="#" class="nav-link px-2 link-dark">{{homeArtista.menuGestion}}</a></li>
               <li><a href="#" class="nav-link px-2 link-dark">Favoritos</a></li>
-              <li><a href="#" class="nav-link px-2 link-dark">Artistas</a></li>
+              <li><a href="#" class="nav-link px-2 link-dark{{homeArtista.borrar}}">Artistas</a></li>
             </ul>
     
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3{{homeArtista.borrar}}" role="search">
               <input type="search" class="form-control" placeholder="¿Qué deseas buscar?" aria-label="Search">
             </form>
 
@@ -48,7 +48,7 @@
                     <li><a class="dropdown-item" href="{% url 'mi perfil' persona.id %}">Mi perfil</a></li>
                     <li><a class="dropdown-item" href="#">Configuración</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Cerrar sesion</a></li>
+                    <li><a class="dropdown-item" href="{% url 'index' %}">Cerrar sesion</a></li>
                   </ul>
 
             </div>
