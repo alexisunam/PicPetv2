@@ -32,6 +32,11 @@
                     <div class="container-fluid">
                         <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                        <a href="#" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="https://cdn.pixabay.com/photo/2016/03/31/17/37/animal-1293792_960_720.png"/></svg>
+                            <img class="mb-2" style="margin-right: 10px" src="https://cdn.pixabay.com/photo/2016/03/31/17/37/animal-1293792_960_720.png" alt="" width="40" height="32">
+                            <span class="fs-4">PicPet</span>
+                          </a> 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                                 <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
@@ -53,13 +58,97 @@
                 <div class="container-fluid">
                     <h1 class="mt-4">Mi perfil</h1>
                     <p>{{persona.id}}</p>
-                    <p>
-                        Make sure to keep all page content within the
-                        <code>#page-content-wrapper</code>
-                        . The top navbar is optional, and just for demonstration. Just create an element with the
-                        <code>#sidebarToggle</code>
-                        ID which will toggle the menu when clicked.
-                    </p>
+                    
+                    <h3 class="h3 display-9 text-center titulo-form-registro">Datos Personales</h3>
+
+                <form id="formulario" novalidate action="insertarArtista" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3 contenedor-form-registro">
+
+                    <div class="col-md-4">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Ingrese su nombre" required>
+                    <p class="text-danger mb-2 d-none" id="alertNombre"></p>
+                    </div>
+
+                    <div class="col-md-4">
+                    <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
+                    <input type="text" name="apellidoPaterno" class="form-control" id="apellidoPaterno" placeholder="Ingrese su apellido paterno" required>
+                    <p class="text-danger mb-2 d-none" id="alertApellidoPaterno"></p>
+                    </div>
+
+                    <div class="col-md-4">
+                    <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+                    <input type="text" name="apellidoMaterno" class="form-control" id="apellidoMaterno" placeholder="Ingrese su apellido materno" required>
+                    <p class="text-danger mb-2 d-none" id="alertApellidoMaterno"></p>
+                    </div>
+
+                    <div class="col-md-4">
+                    <label for="nombreUsuario" class="form-label">Nombre de ususario</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text" id="inputGroupPrepend3">@</span>
+                        <input type="text" name ="nombreUsuario" class="form-control" id="nombreUsuario" required>
+                    </div>
+                    <p class="text-danger mb-2 d-none" id="alertNombreUsuario"></p>
+                    </div>
+
+                    <!-- <div class="row g-3"> -->
+                    <div class="col-md-4">
+                    <label for="email" class="form-label">E-Mail</label>
+                    <input type="email" name="email" class="form-control" id="email" value="@mail.com" required>
+                    <p class="text-danger mb-2 d-none" id="alertEmail"></p>
+                    </div>
+                    <!-- </div> -->
+
+                    <div class="col-md-4">
+                    <label for="validationServer03" class="form-label">Edad</label>
+                    <input type="number" name="edad" class="form-control" id="edad" value="18" required>
+                    <p class="text-danger mb-2 d-none" id="alertEdad"></p>
+                    </div>
+
+                    
+                </div>
+                            
+               
+                
+                <br>
+                <br>
+                <h3 class="h3 display-9 text-center titulo-form-registro">Datos de seguridad</h3>
+                
+                <div class="row g-3 contenedor-form-registro">
+
+                    
+                    <div class="col-md-4">
+                        <label for="contrasenia" class="form-label">Contraseña</label>
+                        <input type="password" name="contrasenia" class="form-control" id="contrasenia" required>
+                        <p class="text-danger mb-2 d-none" id="alertContrasenia"></p>
+                        </div>
+    
+                        <div class="col-md-4">
+                        <label for="confirmarContrasenia" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" name="confirmarContrasenia" class="form-control" id="confirmarContrasenia" required>
+                        <p class="text-danger mb-2 d-none" id="alertConfirmarContrasenia"></p>
+                        
+                        </div>
+                   
+
+                </div>
+                
+                
+                <br>
+                <br>
+                <div class="footer-registro">
+                
+                    <div class="botones-registro">
+                    <button class="btn btn-primary cancela-registro" type="submit">Actualizar datos</button>
+                    <a class="btn btn-primary cancela-registro" href="{% url 'index' %}">Cancelar</a>  
+                    </div>
+
+                </div>
+
+                </form>
+                    
+
                 </div>
             </div>
         </div>
