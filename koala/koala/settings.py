@@ -83,8 +83,8 @@ DATABASES = {
         'NAME': 'picpet',
         'USER': 'servicio',
         'PASSWORD': 'passpass',
-        'HOST': '50.19.31.203',
-        'PORT': '3307',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
@@ -122,9 +122,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
-STATIC_URL = 'static/'
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'koala/static/')
+]
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

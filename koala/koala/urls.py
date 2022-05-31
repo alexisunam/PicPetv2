@@ -35,10 +35,16 @@ urlpatterns = [
     path('insertarArtista', insertarArtista, name='insertarArtista'),
     path('Consultar_clientes', readPersonas, name='consultar clientes'),
     path('mi_perfil/<int:id>', mostrarUsuario, name='mi perfil'),
+    path('Inicio/<int:id>', myHome, name='my home'),
+    path('mi_perfil/actualizarUsuario/<int:id>', actualizarUsuario, name='actualizar usuario'),
 ]
 
 if settings.DEBUG: 
     urlpatterns += static(
         settings.MEDIA_URL, 
         document_root = settings.MEDIA_ROOT
+    )
+    urlpatterns += static(
+        settings.STATIC_URL, 
+        document_root = settings.STATIC_ROOT
     )

@@ -23,12 +23,17 @@ def validarSesion(request):
         persona = Persona.objects.get(email=request.POST['email'])
         
         if(persona.contrasenia == request.POST['contrasenia']):
-            mensaje = "Inicio de sesion exitoso"
-            #return render(request, 'validarSesion.html', {'mensaje' : mensaje})
-            return render(request, 'homeUsuario.html', {'persona' : persona})
+            if(persona.tipo == "Cliente"):
+                #return render(request, 'validarSesion.html', {'mensaje' : mensaje})
+                homeArtista = {'borrar' : "", 'menuGestion' : "Mis Compras"}
+                return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})
+            else:
+                homeArtista = {'borrar' : " d-none", 'menuGestion' : "Mis pedidos"}
+                return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})
         else:
-            mensaje = "Inicio de sesion fracasado"
-            return render(request, 'validarSesion.html', {'mensaje' : mensaje})
+            respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "Contraseña o correo equivocado"}
+            #mensaje = "Inicio de sesion fracasado"
+            return render(request, 'login.html', {'respuestaValidacion' : respuestaValidacion})
     else:
         print("error primer if")
         return render(request, 'login.html')
@@ -41,7 +46,11 @@ def cuentas(request):
 
 # -- inicio funcion registrar artista--
 def registrarArtista(request):
-    return render(request, 'registrarArtista.html')
+    emails, nombresDeUsuario = emailsYusuarios(); #retorna dos arreglos    
+        
+    print(emails)
+    print(nombresDeUsuario)
+    return render(request, 'registrarArtista.html', {'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
 # -- fin --
 
 # -- inicio funcion registrar persona--
@@ -74,33 +83,36 @@ def insertarPersona(request):
 def insertarArtista(request):
     if(request.method == 'POST'):
         print(request)
+        
         documentoTitulo = (request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno'])
-        
         documentoSubido = request.FILES['uploadArchivo'] 
-        
         documentoNuevo = Documento(titulo=documentoTitulo, subirArchivo=documentoSubido)
-        
-        """ documentoNuevo = Documento(titulo=(request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno']), subirArchivo=request.FILES['uploadArchivo']) """
         
         if documentoNuevo.titulo == (request.POST['nombre'] + request.POST['apellidoPaterno'] + request.POST['apellidoMaterno']):
 
-            artistaNuevo = Artista( numeroCuenta=request.POST['numeroCuenta'], archivo=documentoNuevo, nombre=request.POST['nombre'], apellidoPaterno=request.POST['apellidoPaterno'], apellidoMaterno=request.POST['apellidoMaterno'], nombreUsuario=request.POST['nombreUsuario'], email=request.POST['email'], edad=request.POST['edad'], contrasenia=request.POST['contrasenia'])
+            artistaNuevo = Artista( numeroCuenta=request.POST['numeroCuenta'], archivo=documentoNuevo, nombre=request.POST['nombre'], apellidoPaterno=request.POST['apellidoPaterno'], apellidoMaterno=request.POST['apellidoMaterno'], nombreUsuario=request.POST['nombreUsuario'], email=request.POST['email'], edad=request.POST['edad'], tipo="Artista", contrasenia=request.POST['contrasenia'])
         else:
-            return render(request, "registrarartista.html")
+            emails, nombresDeUsuario = emailsYusuarios();
+            respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "Hubo un error en el registro", 'clasesBoton' : "", 'boton' : ""}
+            return render(request, "registrarArtista.html", {'respuestaValidacion' : respuestaValidacion, 'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
                 
         if artistaNuevo.numeroCuenta == request.POST['numeroCuenta']:
             
             documentoNuevo.save()
             artistaNuevo.save()
             print("Se logro")
-            files = Documento.objects.all()
-            
-            return render(request, 'registrarArtista.html', {'files' : files})
+            #files = Documento.objects.all()
+            respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-success mt-2", 'mensaje' : "Se registro correctamente", 'clasesBoton' : "btn btn-primary", 'boton' : "Regresar"}
+            emails, nombresDeUsuario = emailsYusuarios();
+            return render(request, 'registrarArtista.html', {'respuestaValidacion' : respuestaValidacion, 'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
         else:
             print("tercer validacion fallo")
-            return render(request, 'registrarArtista.html')
+            emails, nombresDeUsuario = emailsYusuarios();
+            respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "Hubo un error en el registro", 'clasesBoton' : "", 'boton' : ""}
+            return render(request, "registrarArtista.html", {'respuestaValidacion' : respuestaValidacion, 'emails' : emails, 'nombresDeUsuario' : nombresDeUsuario})
                 
-    else:
+    else: 
+        """ emails, nombresDeUsuario = emailsYusuarios(); """
         return render(request, 'registrarArtista.html')
 # -- fin --
 
@@ -115,9 +127,62 @@ def readPersonas(request):
 # -- inicio funcion mostra usuario--
 def mostrarUsuario(request, id):
     persona = get_object_or_404(Persona, pk=id)
+    emails, nombresDeUsuario = emailsYusuarios();
     
-    return render(request, 'verDatosUsuario.html' ,{'persona' : persona})
+    return render(request, 'verDatosUsuario.html' ,{'persona' : persona, 'nombresDeUsuario' : nombresDeUsuario})
 # -- fin --
+
+# -- inicio funcion actualizar usuario--
+def actualizarUsuario(request, id):
+    persona = get_object_or_404(Persona, pk=id)
+    print("entra actualizarUsuario no entra al POST")
+    if(request.method == 'POST'):
+        print("entra al POST")
+        emails, nombresDeUsuario = emailsYusuarios()
+        persona.nombre = request.POST['nombre']
+        persona.apellidoPaterno = request.POST['apellidoPaterno']
+        persona.apellidoMaterno = request.POST['apellidoMaterno']
+        persona.nombreUsuario = request.POST['nombreUsuario']
+        persona.edad = request.POST['edad']
+        print("Entra al post")
+        
+        if (len(request.POST['nuevaContrasenia']) == 0):
+            print("Entra al primer if")
+            if(request.POST['antiguaContrasenia'] == persona.contrasenia and (request.POST['nombreUsuario'] == persona.nombreUsuario or request.POST['nombreUsuario'] not in nombresDeUsuario)):
+                print("funciona el primer if despues del post")
+                persona.save()
+                respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-success mt-2", 'mensaje' : "Actualizacion de datos con exito"}
+                return render(request, 'verDatosUsuario.html', {'persona' : persona, 'respuestaValidacion' : respuestaValidacion})
+            else:
+                print("Fallo el primer if despues del post")
+                respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "La contraseña actual no coincide y/o el nombre de usuario ya existe"}
+                return render(request, 'verDatosUsuario.html', {'persona' : persona, 'respuestaValidacion' : respuestaValidacion})    
+        else:
+            print("Entra al else del primer if")
+            if(request.POST['antiguaContrasenia'] == persona.contrasenia and request.POST['nuevaContrasenia'] == request.POST['confirmarContrasenia'] and (request.POST['nombreUsuario'] == persona.nombreUsuario or request.POST['nombreUsuario'] not in nombresDeUsuario)):
+                persona.contrasenia = request.POST['nuevaContrasenia']
+                persona.save()
+                respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-success mt-2", 'mensaje' : "Actualizacion de datos y/o contraseña con exito"}
+                return render(request, 'verDatosUsuario.html', {'persona' : persona, 'respuestaValidacion' : respuestaValidacion})
+            else:
+                print("Fallo el else del primer if")
+                respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "La nueva contraseña no coincide o error en la contraseña antigua, el nombre de usuario tambien podria existir"}
+                return render(request, 'verDatosUsuario.html', {'persona' : persona, 'respuestaValidacion' : respuestaValidacion})
+    else:
+        return render(request, 'verDatosUsuario.html', {'persona' : persona})
+# -- fin --         
+
+# -- inicio funcion miHome--
+def myHome(request, id):
+    persona = get_object_or_404(Persona, pk=id)
+    if(persona.tipo == "Artista"):
+        homeArtista = {'borrar' : " d-none", 'menuGestion' : "Mis pedidos"}
+        return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})
+    else:
+        homeArtista = {'borrar' : "", 'menuGestion' : "Mis Compras"}
+        return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})    
+# -- fin --
+
 
 # -- inicio funcion emailsYusuarios, regresa dos arreglos--
 def emailsYusuarios():
