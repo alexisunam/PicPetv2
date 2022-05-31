@@ -127,27 +127,50 @@ def readPersonas(request):
 # -- inicio funcion mostra usuario--
 def mostrarUsuario(request, id):
     persona = get_object_or_404(Persona, pk=id)
+    emails, nombresDeUsuario = emailsYusuarios();
     
-    return render(request, 'verDatosUsuario.html' ,{'persona' : persona})
+    return render(request, 'verDatosUsuario.html' ,{'persona' : persona, 'nombresDeUsuario' : nombresDeUsuario})
 # -- fin --
 
 # -- inicio funcion actualizar usuario--
 def actualizarUsuario(request, id):
     persona = get_object_or_404(Persona, pk=id)
+    print("entra actualizarUsuario no entra al POST")
     if(request.method == 'POST'):
+        print("entra al POST")
+        emails, nombresDeUsuario = emailsYusuarios()
         persona.nombre = request.POST['nombre']
         persona.apellidoPaterno = request.POST['apellidoPaterno']
         persona.apellidoMaterno = request.POST['apellidoMaterno']
         persona.nombreUsuario = request.POST['nombreUsuario']
         persona.edad = request.POST['edad']
+        print("Entra al post")
         
-        if not request.POST['nuevaContrasenia']:
-            persona.save()
+        if (len(request.POST['nuevaContrasenia']) == 0):
+            print("Entra al primer if")
+            if(request.POST['antiguaContrasenia'] == persona.contrasenia and (request.POST['nombreUsuario'] == persona.nombreUsuario or request.POST['nombreUsuario'] not in nombresDeUsuario)):
+                print("funciona el primer if despues del post")
+                persona.save()
+                respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-success mt-2", 'mensaje' : "Actualizacion de datos con exito"}
+                return render(request, 'verDatosUsuario.html', {'persona' : persona, 'respuestaValidacion' : respuestaValidacion})
+            else:
+                print("Fallo el primer if despues del post")
+                respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "La contraseña actual no coincide y/o el nombre de usuario ya existe"}
+                return render(request, 'verDatosUsuario.html', {'persona' : persona, 'respuestaValidacion' : respuestaValidacion})    
         else:
-            if(request.POST['nuevaContrasenia'] == request.POST['confirmarContrasenia']):
+            print("Entra al else del primer if")
+            if(request.POST['antiguaContrasenia'] == persona.contrasenia and request.POST['nuevaContrasenia'] == request.POST['confirmarContrasenia'] and (request.POST['nombreUsuario'] == persona.nombreUsuario or request.POST['nombreUsuario'] not in nombresDeUsuario)):
                 persona.contrasenia = request.POST['nuevaContrasenia']
                 persona.save()
-                
+                respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-success mt-2", 'mensaje' : "Actualizacion de datos y/o contraseña con exito"}
+                return render(request, 'verDatosUsuario.html', {'persona' : persona, 'respuestaValidacion' : respuestaValidacion})
+            else:
+                print("Fallo el else del primer if")
+                respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "La nueva contraseña no coincide o error en la contraseña antigua, el nombre de usuario tambien podria existir"}
+                return render(request, 'verDatosUsuario.html', {'persona' : persona, 'respuestaValidacion' : respuestaValidacion})
+    else:
+        return render(request, 'verDatosUsuario.html', {'persona' : persona})
+# -- fin --         
 
 # -- inicio funcion miHome--
 def myHome(request, id):
