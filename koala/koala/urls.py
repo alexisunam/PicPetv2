@@ -37,6 +37,10 @@ urlpatterns = [
     path('mi_perfil/<int:id>', mostrarUsuario, name='mi perfil'),
     path('Inicio/<int:id>', myHome, name='my home'),
     path('mi_perfil/actualizarUsuario/<int:id>', actualizarUsuario, name='actualizar usuario'),
+    path('iniciar_blog/<int:id>', iniciarBlog, name='iniciar blog'),
+    path('crear_blog/<int:id>', crearBlog, name='crear blog'),
+    path('my home/Blog/<int:id>', verBlog, name='ver blog'),
+    path('my home/verArtista/<int:id>', verArtista, name='ver artista'),
 ]
 
 if settings.DEBUG: 

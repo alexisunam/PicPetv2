@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
-from numpy import array
+from numpy import *
 """ from django.forms import modelform_factory """
-from picpet.models import Persona, Artista, Documento
+from picpet.models import Persona, Artista, Documento, Blog
 
 
 
@@ -21,15 +21,23 @@ def iniciarSesion(request):
 def validarSesion(request):
     if(request.method == 'POST'):
         persona = Persona.objects.get(email=request.POST['email'])
-        
+        """ blogs = Blog.objects.get(id = 1) """
+        blogs = Blog.objects.all()
+        """ artistas = Artista.objects.all() """
+        numeroBlogs = Blog.objects.count()
         if(persona.contrasenia == request.POST['contrasenia']):
             if(persona.tipo == "Cliente"):
-                #return render(request, 'validarSesion.html', {'mensaje' : mensaje})
-                homeArtista = {'borrar' : "", 'menuGestion' : "Mis Compras"}
-                return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})
+                
+                homeArtista = {'borrar' : "", 'menuGestion' : "Mis Compras", 'tituloHome' : "Mis blogs"}
+                print(numeroBlogs)
+                """ print(artistas) """
+                print(blogs)
+                
+                return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista, 'blogs' : blogs})
             else:
-                homeArtista = {'borrar' : " d-none", 'menuGestion' : "Mis pedidos"}
-                return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})
+                blogs = Blog.objects.filter(autor=persona)
+                homeArtista = {'borrar' : " d-none", 'menuGestion' : "Mis pedidos", 'tituloHome' : "Mis blogs"}
+                return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista, 'blogs' : blogs})
         else:
             respuestaValidacion = {'centrar' : "text-center",'clases' : "alert alert-danger mt-2", 'mensaje' : "Contraseña o correo equivocado"}
             #mensaje = "Inicio de sesion fracasado"
@@ -176,13 +184,48 @@ def actualizarUsuario(request, id):
 def myHome(request, id):
     persona = get_object_or_404(Persona, pk=id)
     if(persona.tipo == "Artista"):
+        blogs = Blog.objects.filter(autor=persona)
         homeArtista = {'borrar' : " d-none", 'menuGestion' : "Mis pedidos"}
-        return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})
+        return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista, 'blogs' : blogs})
     else:
         homeArtista = {'borrar' : "", 'menuGestion' : "Mis Compras"}
-        return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista})    
+        blogs = Blog.objects.all()
+        print(blogs)
+        return render(request, 'homeUsuario.html', {'persona' : persona, 'homeArtista' : homeArtista, 'blogs' : blogs})
 # -- fin --
 
+# -- inicio funcion iniciar blog--
+def iniciarBlog(request, id):
+    persona = get_object_or_404(Persona, pk=id)
+    return render(request, 'iniciarBlog.html', {'persona' : persona})
+
+# -- inicio funcion crear blog--
+def crearBlog(request, id):
+    artista = get_object_or_404(Artista, pk=id)
+    if(request.method == 'POST'):
+        intro = request.POST['cuerpo'][:25]
+        intro = intro + "..."
+        blog = Blog(titulo=request.POST['titulo'], intro=intro,cuerpo=request.POST['cuerpo'], subirImagen=request.FILES['uploadImagen'], autor=artista)
+        blog.save()
+        return myHome(request, id)
+    else:
+        return render(request, 'crearBlog.html', {'persona' : artista})
+# -- fin --     
+
+# -- inicio funcion ver blog--
+def verBlog(request, id):
+    blog = get_object_or_404(Blog, pk=id)
+    """ persona = get_object_or_404(Artista, pk=id) """
+    return render(request, 'Blog.html', {'blog' : blog})
+# -- fin --
+
+# -- inicio funcion ver artista --
+def verArtista(request, id):
+    persona = get_object_or_404(Persona, pk=id)
+    blogs = Blog.objects.filter(autor=persona)
+    print(blogs)
+    
+    return render(request, 'verArtista.html', {'persona' : persona, 'blogs' : blogs})
 
 # -- inicio funcion emailsYusuarios, regresa dos arreglos--
 def emailsYusuarios():
@@ -196,3 +239,4 @@ def emailsYusuarios():
         nombresUsuariosArreglo.append(nombreUsuarioPersona.nombreUsuario)
     
     return emailsArreglo, nombresUsuariosArreglo
+

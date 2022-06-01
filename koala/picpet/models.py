@@ -26,14 +26,15 @@ class Artista(Persona):
     numeroCuenta = models.CharField(max_length=9)
     archivo = models.ForeignKey(Documento, on_delete=models.RESTRICT, null=False)
     def __str__(self):
-        return f'Artista {self.id} : {self.numeroCuenta} {self.archivo}'
+        return f'Artista {self.id} : {self.numeroCuenta}'
     
 class Blog(models.Model):
     titulo = models.CharField(max_length=50)
+    intro = models.TextField(max_length=60, default='No hay descripcion')
     autor = models.ForeignKey(Artista, on_delete=models.CASCADE, null=False)
-    cuerpo = models.CharField(max_length=160)
+    cuerpo = models.CharField(max_length=200)
     subirImagen = models.ImageField(upload_to="Uploaded Images/")
-    dateTimeOfUpload = models.DateTimeField(auto_now=True)
+    dateTimeOfUploadImage = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return f'Blog {self.id} : {self.titulo} {self.autor} {self.cuerpo} {self.subirImagen} {self.dateTimeOfUpload}'
+        return f'Blog {self.id} : {self.titulo} {self.autor.nombreUsuario} {self.cuerpo} {self.subirImagen} {self.dateTimeOfUploadImage}'
     
